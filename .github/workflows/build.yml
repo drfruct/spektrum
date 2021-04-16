@@ -15,7 +15,6 @@ jobs:
           wget --no-check-certificate https://download.processing.org/processing-3.5.4-linux64.tgz
           tar -xf processing-3.5.4-linux64.tgz
       - name: Build
-        working-directory: build
         run: |
           git clone https://github.com/pavels/rtl-sdr
           cd rtl-sdr
