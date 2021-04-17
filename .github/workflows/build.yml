@@ -17,6 +17,16 @@ jobs:
           wget --no-check-certificate https://download.processing.org/processing-3.5.4-macosx.zip
           tar -xf processing-3.5.4-macosx.zip
           ls -al
+      - name: Build
+        run: |
+          ls -al /Library/Frameworks
+          cd /tmp
+          git clone https://github.com/pavels/rtl-sdr
+          cd rtl-sdr
+          cmake .
+          make
+          make install
+          ls -al /Library/Frameworks
       # - name: Install dependencies
       #   run: |
       #     sudo apt-get update
