@@ -19,14 +19,24 @@ jobs:
           ls -al
       - name: Build
         run: |
-          ls -al /Library/Frameworks
           cd /tmp
           git clone https://github.com/pavels/rtl-sdr
           cd rtl-sdr
           cmake .
           make
           make install
-          ls -al /Library/Frameworks
+
+          mkdir -p $HOME/sketchbook/libraries/rtlspektrum/library
+          cd "$HOME/sketchbook/libraries"
+          wget https://github.com/sojamo/controlp5/releases/download/v2.2.5/controlP5-2.2.5.zip
+          unzip -x controlP5-2.2.5.zip
+          wget https://github.com/Viproz/controlp5/releases/download/v2.2.7b/controlP5.jar
+          cp -f controlP5.jar controlP5/library
+          cd "$GITHUB_WORKSPACE"
+          git clone https://github.com/pavels/processing-rtlspektum-lib
+          cd processing-rtlspektum-lib
+          mvn package
+
       # - name: Install dependencies
       #   run: |
       #     sudo apt-get update
