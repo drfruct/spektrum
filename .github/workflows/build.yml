@@ -41,7 +41,7 @@ jobs:
           cp target/rtlspektrum.jar "$HOME/sketchbook/libraries/rtlspektrum/library/"
           cp target/lib/bridj-0.7.0.jar "$HOME/sketchbook/libraries/rtlspektrum/library/bridj.jar"
           cd ..
-          $HOME/bin/Processing.app --sketch="$GITHUB_WORKSPACE" --output="$GITHUB_WORKSPACE/spektrum" --force --export
+          $HOME/bin/Processing.app/Contents/MacOS/Processing --sketch="$GITHUB_WORKSPACE" --output="$GITHUB_WORKSPACE/spektrum" --force --export
           mkdir -p spektrum/data
           cp -L rtl-sdr/src/librtlpower.so spektrum/lib/
           cp -L rtl-sdr/src/librtlsdr.so spektrum/lib/
