@@ -4,44 +4,54 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-16.04
+    runs-on: macos-10.15
+    # runs-on: ubuntu-16.04
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get -y install libusb-1.0-0-dev maven wget unzip git
-          cd /opt
-          wget --no-check-certificate https://download.processing.org/processing-3.5.4-linux64.tgz
-          tar -xf processing-3.5.4-linux64.tgz
-      - name: Build
-        run: |
-          git clone https://github.com/pavels/rtl-sdr
-          cd rtl-sdr
-          cmake .
-          make
-          cd ..
-          mkdir -p $HOME/sketchbook/libraries/rtlspektrum/library
-          cd "$HOME/sketchbook/libraries"
-          wget https://github.com/sojamo/controlp5/releases/download/v2.2.5/controlP5-2.2.5.zip
-          unzip -x controlP5-2.2.5.zip
-          wget https://github.com/Viproz/controlp5/releases/download/v2.2.7b/controlP5.jar
-          cp -f controlP5.jar controlP5/library
-          cd "$GITHUB_WORKSPACE"
-          git clone https://github.com/pavels/processing-rtlspektum-lib
-          cd processing-rtlspektum-lib
-          mvn package
-          cp library.properties "$HOME/sketchbook/libraries/rtlspektrum/"
-          cp target/rtlspektrum.jar "$HOME/sketchbook/libraries/rtlspektrum/library/"
-          cp target/lib/bridj-0.7.0.jar "$HOME/sketchbook/libraries/rtlspektrum/library/bridj.jar"
-          cd ..
-          /opt/processing-3.5.4/processing-java --sketch="$GITHUB_WORKSPACE" --output="$GITHUB_WORKSPACE/spektrum" --force --export
-          mkdir -p spektrum/data
-          cp -L rtl-sdr/src/librtlpower.so spektrum/lib/
-          cp -L rtl-sdr/src/librtlsdr.so spektrum/lib/
-          tar -czf spektrum-linux64.tar.gz spektrum
-      - name: Save artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: spektrum-linux64.tar.gz
-          path: spektrum-linux64.tar.gz
+          brew update
+          brew install libusb maven wget unzip
+          mkdir -p $HOME/bin
+          cd $HOME/bin
+          wget --no-check-certificate https://download.processing.org/processing-3.5.4-macosx.zip
+          tar -xf processing-3.5.4-macosx.zip
+          ls -al
+      # - name: Install dependencies
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get -y install libusb-1.0-0-dev maven wget unzip
+      #     cd /opt
+      #     wget --no-check-certificate https://download.processing.org/processing-3.5.4-linux64.tgz
+      #     tar -xf processing-3.5.4-linux64.tgz
+      # - name: Build
+      #   run: |
+      #     git clone https://github.com/pavels/rtl-sdr
+      #     cd rtl-sdr
+      #     cmake .
+      #     make
+      #     cd ..
+      #     mkdir -p $HOME/sketchbook/libraries/rtlspektrum/library
+      #     cd "$HOME/sketchbook/libraries"
+      #     wget https://github.com/sojamo/controlp5/releases/download/v2.2.5/controlP5-2.2.5.zip
+      #     unzip -x controlP5-2.2.5.zip
+      #     wget https://github.com/Viproz/controlp5/releases/download/v2.2.7b/controlP5.jar
+      #     cp -f controlP5.jar controlP5/library
+      #     cd "$GITHUB_WORKSPACE"
+      #     git clone https://github.com/pavels/processing-rtlspektum-lib
+      #     cd processing-rtlspektum-lib
+      #     mvn package
+      #     cp library.properties "$HOME/sketchbook/libraries/rtlspektrum/"
+      #     cp target/rtlspektrum.jar "$HOME/sketchbook/libraries/rtlspektrum/library/"
+      #     cp target/lib/bridj-0.7.0.jar "$HOME/sketchbook/libraries/rtlspektrum/library/bridj.jar"
+      #     cd ..
+      #     /opt/processing-3.5.4/processing-java --sketch="$GITHUB_WORKSPACE" --output="$GITHUB_WORKSPACE/spektrum" --force --export
+      #     mkdir -p spektrum/data
+      #     cp -L rtl-sdr/src/librtlpower.so spektrum/lib/
+      #     cp -L rtl-sdr/src/librtlsdr.so spektrum/lib/
+      #     tar -czf spektrum-linux64.tar.gz spektrum
+      # - name: Save artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: spektrum-linux64.tar.gz
+      #     path: spektrum-linux64.tar.gz
